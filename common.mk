@@ -14,9 +14,6 @@
 # limitations under the License.
 #
 
-# Enable updating of APEXes
-$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
-
 # Get non-open-source specific aspects
 $(call inherit-product, vendor/oneplus/sdm845-common/sdm845-common-vendor.mk)
 
@@ -27,12 +24,6 @@ DEVICE_PACKAGE_OVERLAYS += \
 
 # Properties
 -include $(LOCAL_PATH)/system_prop.mk
-
-PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
-
-# Permissions
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
 
 # A/B
 AB_OTA_UPDATER := true
@@ -58,36 +49,31 @@ PRODUCT_PACKAGES += \
 
 # Audio
 PRODUCT_PACKAGES += \
-    audio.a2dp.default \
-    libaacwrapper
+    audio.a2dp.default
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/audio_policy_configuration.xml:system/etc/audio_policy_configuration.xml
 
 # Boot control
-PRODUCT_PACKAGES += \
-    android.hardware.boot@1.0-impl.recovery \
-    bootctrl.sdm845.recovery
-
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
-
-# Camera
-PRODUCT_PACKAGES += \
-    Snap
 
 # Common init scripts
 PRODUCT_PACKAGES += \
     init.qcom.rc \
-    init.recovery.qcom.rc \
-    ueventd.qcom.rc
+    init.recovery.qcom.rc
+
+# Camera
+PRODUCT_PACKAGES += \
+    CameraPackage
+
+# Device
+PRODUCT_PACKAGES += \
+    DeviceParts
 
 # Display
 PRODUCT_PACKAGES += \
-    libdisplayconfig \
-    libqdMetaData.system \
-    libvulkan \
-    vendor.display.config@1.0
+    libvulkan
 
 # Doze
 PRODUCT_PACKAGES += \
@@ -97,18 +83,20 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/privapp-permissions-hotword.xml:system/etc/permissions/privapp-permissions-hotword.xml
 
+# IMS
+PRODUCT_PACKAGES += \
+    android.hidl.base@1.0
+
 # Input
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/idc/fpc1020.idc:system/usr/idc/fpc1020.idc \
     $(LOCAL_PATH)/idc/gf_input.idc:system/usr/idc/gf_input.idc \
+    $(LOCAL_PATH)/keylayout/fpc1020.kl:system/usr/keylayout/fpc1020.kl \
     $(LOCAL_PATH)/keylayout/gf_input.kl:system/usr/keylayout/gf_input.kl
 
 # Lights
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.oneplus_sdm845
-
-# LiveDisplay
-PRODUCT_PACKAGES += \
-    lineage.livedisplay@2.0-service.oneplus_sdm845
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -120,57 +108,49 @@ PRODUCT_PACKAGES += \
 
 # NFC
 PRODUCT_PACKAGES += \
-    android.hardware.nfc@1.0:64 \
-    android.hardware.nfc@1.1:64 \
-    android.hardware.secure_element@1.0:64 \
-    com.android.nfc_extras \
+    NfcNci \
     Tag \
-    vendor.nxp.nxpese@1.0:64 \
-    vendor.nxp.nxpnfc@1.0:64
+    com.android.nfc_extras
 
 # Power
 PRODUCT_PACKAGES += \
-    power.qcom:64
+    power.qcom
 
-# Remove unwanted packages
+# Prebuilts
 PRODUCT_PACKAGES += \
-    RemovePackages
+    OnePlusCamera \
+    OnePlusGallery \
+    OnePlusCameraService
 
-# Telephony
-PRODUCT_PACKAGES += \
-    telephony-ext
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilts/addon.d/51-oneplus-camera.sh:system/addon.d/51-oneplus-camera.sh  \
+    $(LOCAL_PATH)/prebuilts/etc/permissions/privapp-permissions-oem.xml:system/etc/permissions/privapp-permissions-oem.xml
 
-#PRODUCT_BOOT_JARS += \
-    telephony-ext
-
-# Touch
-PRODUCT_PACKAGES += \
-    lineage.touch@1.0-service.oneplus_sdm845
-
-# tri-state-key
-PRODUCT_PACKAGES += \
-    KeyHandler \
-    tri-state-key_daemon
-
-# Trust HAL
-PRODUCT_PACKAGES += \
-    lineage.trust@1.0-service
+# QTI
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/qti_whitelist.xml:system/etc/sysconfig/qti_whitelist.xml
 
 # Update engine
 PRODUCT_PACKAGES += \
+    brillo_update_payload \
     update_engine \
     update_engine_sideload \
     update_verifier
 
+PRODUCT_STATIC_BOOT_CONTROL_HAL := \
+    bootctrl.sdm845 \
+    libcutils \
+    libgptutils \
+    libz \
+
 PRODUCT_PACKAGES_DEBUG += \
     update_engine_client
-
-# WiFi Display
+# Telephony
 PRODUCT_PACKAGES += \
-    libnl
-
-#PRODUCT_BOOT_JARS += \
+    telephony-ext \
+    ims-ext-common \
+    qti-telephony-common
+    
+ PRODUCT_BOOT_JARS += \
+    telephony-ext \
     WfdCommon
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/privapp-permissions-wfd.xml:system/etc/permissions/privapp-permissions-wfd.xml

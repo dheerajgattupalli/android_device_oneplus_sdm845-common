@@ -29,28 +29,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Display
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.gralloc.gfx_ubwc_disable=0 \
-    debug.sf.enable_hwc_vds=1 \
-    debug.sf.latch_unsignaled=1 \
-    persist.vendor.color.matrix=2
-
-# CNE
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.vendor.cne.feature=1
-
-# DPM
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.vendor.dpm.feature=9
-
-# IMS
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.dbg.volte_avail_ovr=1 \
-    persist.dbg.vt_avail_ovr=1  \
-    persist.dbg.wfc_avail_ovr=1
+    debug.sf.latch_unsignaled=1
 
 # IOP
 PRODUCT_PROPERTY_OVERRIDES += \
     vendor.iop.enable_prefetch_ofr=1 \
     vendor.iop.enable_uxe=0
+
+# OTG
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.oem.otg_support=true
 
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -82,4 +70,4 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # SSR
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.vendor.ssr.restart_level=ALL_ENABLE
+    persist.sys.ssr.restart_level=ALL_ENABLE
